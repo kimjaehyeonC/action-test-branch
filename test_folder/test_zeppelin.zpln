@@ -1,0 +1,164 @@
+{
+  "paragraphs": [
+    {
+      "text": "%python\n\nimport mlflow\nimport os\nimport time\nfrom datetime import datetime\nfrom sklearn.ensemble import GradientBoostingClassifier\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import accuracy_score\n\nUSER_NAME \u003d \"user_A\"  # 각 노트북마다 변경\n\nos.environ[\"MLFLOW_TRACKING_URI\"] \u003d \"urls\"\nos.environ[\"MLFLOW_S3_ENDPOINT_URL\"] \u003d \"urls\"\nos.environ[\"AWS_ACCESS_KEY_ID\"] \u003d \"keyids\"\nos.environ[\"AWS_SECRET_ACCESS_KEY\"] \u003d \"tokens\"\n\n# ↓ 4개 탭 셀 실행 후 이 시각에 일제히 시작\nSTART_AT \u003d \"07:27:00\"  # 현재 시각보다 1~2분 뒤로 설정\n\nprint(f\"[{USER_NAME}] {START_AT} 에 시작 대기 중...\")\nwhile datetime.now().strftime(\"%H:%M:%S\") \u003c START_AT:\n    time.sleep(0.1)\n\nprint(f\"[{USER_NAME}] 시작!\")\n\nX, y \u003d load_breast_cancer(return_X_y\u003dTrue)\nX_train, X_test, y_train, y_test \u003d train_test_split(X, y, test_size\u003d0.2, random_state\u003d42)\n\nmlflow.set_experiment(\"zeppelin-test\")\n\nwith mlflow.start_run(run_name\u003df\"concurrent_{USER_NAME}\") as run:\n    mlflow.set_tag(\"user\", USER_NAME)\n\n    model \u003d GradientBoostingClassifier(n_estimators\u003d100, random_state\u003d42)\n    model.fit(X_train, y_train)\n\n    for step in range(1, 11):\n        mlflow.log_metric(\"accuracy\", accuracy_score(y_test, model.predict(X_test)), step\u003dstep)\n        mlflow.log_metric(\"progress\", step * 10, step\u003dstep)\n        time.sleep(1)\n\n    mlflow.sklearn.log_model(model, \"model\")\n    print(f\"[{USER_NAME}] 완료 / run_id: {run.info.run_id}\")",
+      "user": "anonymous",
+      "dateUpdated": "2026-04-14 07:25:59.739",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 11.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[user_A] 07:27:00 에 시작 대기 중...\n[user_A] 시작!\n2026/04/14 07:27:00 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git SHA is not available. Error: Failed to initialize: Bad git executable.\nThe git executable must be specified in one of the following ways:\n    - be included in your $PATH\n    - be set via $GIT_PYTHON_GIT_EXECUTABLE\n    - explicitly set via git.refresh(\u003cfull-path-to-git-executable\u003e)\n\nAll git commands will error until this is rectified.\n\nThis initial message can be silenced or aggravated in the future by setting the\n$GIT_PYTHON_REFRESH environment variable. Use one of the following values:\n    - quiet|q|silence|s|silent|none|n|0: for no message or exception\n    - warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)\n    - error|e|exception|raise|r|2: for a raised exception\n\nExample:\n    export GIT_PYTHON_REFRESH\u003dquiet\n\nGradientBoostingClassifier(random_state\u003d42)\n2026/04/14 07:27:11 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.\n2026/04/14 07:27:11 WARNING mlflow.sklearn: Saving scikit-learn models in the pickle or cloudpickle format requires exercising caution because these formats rely on Python\u0027s object serialization mechanism, which can execute arbitrary code during deserialization. The recommended safe alternative is the \u0027skops\u0027 format. For more information, see: https://scikit-learn.org/stable/model_persistence.html\n\u003cmlflow.models.model.ModelInfo object at 0x7f944fc46910\u003e\n[user_A] 완료 / run_id: 5466dd20d58a495e94485427805c1aa2\n🏃 View run concurrent_user_A at: http://192.168.10.35:5000/#/experiments/123/runs/5466dd20d58a495e94485427805c1aa2\n🧪 View experiment at: http://192.168.10.35:5000/#/experiments/123\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1776150933967_215361000",
+      "id": "paragraph_1776150933967_215361000",
+      "dateCreated": "2026-04-14 07:15:33.967",
+      "dateStarted": "2026-04-14 07:25:59.742",
+      "dateFinished": "2026-04-14 07:27:16.705",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%python\n\nfrom datetime import datetime\n\nprint(datetime.now().strftime(\"%H:%M:%S\"))\n# print(f\"[{USER_NAME}] 시작!\")\nprint(\"26-04-24 10:34 AM\")",
+      "user": "jhkim",
+      "dateUpdated": "2026-04-24 10:34:28.047",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "01:34:28\n26-04-24 10:34 AM\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1776151187590_1347600891",
+      "id": "paragraph_1776151187590_1347600891",
+      "dateCreated": "2026-04-14 07:19:47.590",
+      "dateStarted": "2026-04-24 10:34:28.051",
+      "dateFinished": "2026-04-24 10:34:28.063",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark.pyspark\n\n\nprint(\"1234567890\")\n",
+      "user": "jhkim",
+      "dateUpdated": "2026-04-24 10:34:16.567",
+      "progress": 0,
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "io.fabric8.kubernetes.client.KubernetesClientException: Failure executing: POST at: https://10.96.0.1/api/v1/namespaces/zeppelin-qh/pods. Message: Pod \"spark-2mq7kc2sg-lcfkgn\" is invalid: spec.containers[0].resources.requests: Invalid value: \"9011Mi\": must be less than or equal to memory limit of 4Gi. Received status: Status(apiVersion\u003dv1, code\u003d422, details\u003dStatusDetails(causes\u003d[StatusCause(field\u003dspec.containers[0].resources.requests, message\u003dInvalid value: \"9011Mi\": must be less than or equal to memory limit of 4Gi, reason\u003dFieldValueInvalid, additionalProperties\u003d{})], group\u003dnull, kind\u003dPod, name\u003dspark-2mq7kc2sg-lcfkgn, retryAfterSeconds\u003dnull, uid\u003dnull, additionalProperties\u003d{}), kind\u003dStatus, message\u003dPod \"spark-2mq7kc2sg-lcfkgn\" is invalid: spec.containers[0].resources.requests: Invalid value: \"9011Mi\": must be less than or equal to memory limit of 4Gi, metadata\u003dListMeta(_continue\u003dnull, remainingItemCount\u003dnull, resourceVersion\u003dnull, selfLink\u003dnull, additionalProperties\u003d{}), reason\u003dInvalid, status\u003dFailure, additionalProperties\u003d{}).\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.requestFailure(OperationSupport.java:684)\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.requestFailure(OperationSupport.java:664)\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.assertResponseCode(OperationSupport.java:615)\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.handleResponse(OperationSupport.java:558)\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.handleResponse(OperationSupport.java:521)\n\tat io.fabric8.kubernetes.client.dsl.base.OperationSupport.handleCreate(OperationSupport.java:308)\n\tat io.fabric8.kubernetes.client.dsl.base.BaseOperation.handleCreate(BaseOperation.java:644)\n\tat io.fabric8.kubernetes.client.dsl.base.BaseOperation.handleCreate(BaseOperation.java:83)\n\tat io.fabric8.kubernetes.client.dsl.base.CreateOnlyResourceOperation.create(CreateOnlyResourceOperation.java:61)\n\tat io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplace(CreateOrReplaceHelper.java:48)\n\tat io.fabric8.kubernetes.client.dsl.base.BaseOperation.createOrReplace(BaseOperation.java:318)\n\tat io.fabric8.kubernetes.client.dsl.base.BaseOperation.createOrReplace(BaseOperation.java:83)\n\tat io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.createOrReplace(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.java:105)\n\tat io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.lambda$createOrReplace$7(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.java:174)\n\tat java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)\n\tat java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)\n\tat java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)\n\tat java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)\n\tat java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)\n\tat java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)\n\tat java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)\n\tat io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.createOrReplace(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.java:176)\n\tat io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.createOrReplace(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.java:54)\n\tat org.apache.zeppelin.interpreter.launcher.K8sRemoteInterpreterProcess.apply(K8sRemoteInterpreterProcess.java:288)\n\tat org.apache.zeppelin.interpreter.launcher.K8sRemoteInterpreterProcess.apply(K8sRemoteInterpreterProcess.java:276)\n\tat org.apache.zeppelin.interpreter.launcher.K8sRemoteInterpreterProcess.start(K8sRemoteInterpreterProcess.java:158)\n\tat org.apache.zeppelin.interpreter.ManagedInterpreterGroup.getOrCreateInterpreterProcess(ManagedInterpreterGroup.java:68)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getOrCreateInterpreterProcess(RemoteInterpreter.java:103)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.internal_create(RemoteInterpreter.java:153)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.open(RemoteInterpreter.java:125)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getFormType(RemoteInterpreter.java:270)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:428)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:68)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:186)\n\tat org.apache.zeppelin.scheduler.AbstractScheduler.runJob(AbstractScheduler.java:135)\n\tat org.apache.zeppelin.scheduler.RemoteScheduler$JobRunner.run(RemoteScheduler.java:186)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n\tat java.base/java.lang.Thread.run(Thread.java:829)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1776151484789_638619148",
+      "id": "paragraph_1776151484789_638619148",
+      "dateCreated": "2026-04-14 07:24:44.789",
+      "dateStarted": "2026-04-24 10:34:16.570",
+      "dateFinished": "2026-04-24 10:34:16.595",
+      "status": "ERROR"
+    },
+    {
+      "text": "%spark.pyspark\n",
+      "user": "jhkim",
+      "dateUpdated": "2026-04-24 10:34:16.570",
+      "progress": 0,
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1776994456570_972759534",
+      "id": "paragraph_1776994456570_972759534",
+      "dateCreated": "2026-04-24 10:34:16.570",
+      "status": "READY"
+    }
+  ],
+  "name": "sync_test_A",
+  "id": "2MQ7KC2SG",
+  "defaultInterpreterGroup": "python",
+  "version": "0.11.2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
